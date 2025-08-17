@@ -2,12 +2,13 @@ import streamlit as st
 import pandas as pd
 import pickle
 
-# Load Model and Version Info from Pickle
+# Load Model (without version info) from Pickle
 with open("bigmart_best_model.pkl", "rb") as f:
-    model, sklearn_version = pickle.load(f)
+    model = pickle.load(f)  # Only load the model (not the sklearn version)
 
+# Set up the Streamlit app title and description
 st.title("🛒 BigMart Sales Prediction App")
-st.markdown(f"Using **scikit-learn v{sklearn_version}** model to predict item sales.")
+st.markdown("This app predicts item sales for BigMart using a pre-trained model.")
 
 # User Inputs
 Item_Identifier = st.text_input("Item Identifier", "FDA15")
@@ -35,6 +36,7 @@ Outlet_Age = st.slider("Outlet Age (Years)", 0, 40, 15)
 
 # Predict Button
 if st.button("Predict Sales"):
+    # Create a DataFrame for the input data
     input_df = pd.DataFrame([{
         "Item_Identifier": Item_Identifier,
         "Item_Weight": Item_Weight,
@@ -49,6 +51,19 @@ if st.button("Predict Sales"):
         "Outlet_Age": Outlet_Age
     }])
 
-    # Make prediction
+    # Handle any necessary preprocessing (e.g., encoding categorical variables)
+    # Example: Label encoding for categorical columns (if needed)
+    from sklearn.preprocessing import LabelEncoder
+    le = LabelEncoder()
+    input_df["Item_Fat_Content"] = le.fit_transform(input_df["Item_Fat_Content"])
+    input_df["Item_Type"] = le.fit_transform(input_df["Item_Type"])
+    input_df["Outlet_Identifier"] = le.fit_transform(input_df["Outlet_Identifier"])
+    input_df["Outlet_Size"] = le.fit_transform(input_df["Outlet_Size"])
+    input_df["Outlet_Location_Type"] = le.fit_transform(input_df["Outlet_Location_Type"])
+    input_df["Outlet_Type"] = le.fit_transform(input_df["Outlet_Type"])
+
+    # Make prediction using the model
     prediction = model.predict(input_df)[0]
+    
+    # Display prediction result
     st.success(f"📈 Predicted Item Outlet Sales: ₹{prediction:.2f}")
