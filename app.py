@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import pickle
 from sklearn.preprocessing import LabelEncoder
+import numpy as np
 
 # Load Model (unpack the tuple) from Pickle
 with open("bigmart_best_model.pkl", "rb") as f:
@@ -51,6 +52,10 @@ if st.button("Predict Sales"):
         "Outlet_Type": Outlet_Type,
         "Outlet_Age": Outlet_Age
     }])
+
+    # Handle missing values (fill NaN with a default value, e.g., mean for numeric, mode for categorical)
+    input_df = input_df.apply(pd.to_numeric, errors='coerce')  # Coerce errors to NaN
+    input_df.fillna(input_df.mean(), inplace=True)  # Fill NaN with column means for numeric columns
 
     # Handle necessary preprocessing (e.g., encoding categorical variables)
     le = LabelEncoder()
