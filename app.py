@@ -53,12 +53,21 @@ if st.button("Predict Sales"):
         "Outlet_Age": Outlet_Age
     }])
 
+    # Debugging: Print the raw input data
+    st.write("Raw Input Data:")
+    st.write(input_df)
+
     # Print the input types for debugging
     st.write("Input Data Types:", input_df.dtypes)
 
     # Handle missing values (fill NaN with a default value, e.g., mean for numeric, mode for categorical)
     input_df = input_df.apply(pd.to_numeric, errors='coerce')  # Coerce errors to NaN
     input_df.fillna(input_df.mean(), inplace=True)  # Fill NaN with column means for numeric columns
+
+    # Debugging: Print the processed input data and types after handling NaN
+    st.write("Processed Input Data (After NaN Handling):")
+    st.write(input_df)
+    st.write("Processed Data Types:", input_df.dtypes)
 
     # Handle necessary preprocessing (e.g., encoding categorical variables)
     le = LabelEncoder()
@@ -69,8 +78,10 @@ if st.button("Predict Sales"):
     input_df["Outlet_Location_Type"] = le.fit_transform(input_df["Outlet_Location_Type"])
     input_df["Outlet_Type"] = le.fit_transform(input_df["Outlet_Type"])
 
-    # Print the processed input types for debugging
-    st.write("Processed Data Types:", input_df.dtypes)
+    # Debugging: Print the final processed input data and types
+    st.write("Final Processed Input Data:")
+    st.write(input_df)
+    st.write("Final Processed Data Types:", input_df.dtypes)
 
     # Ensure that the model receives data in the same format and shape as the training data
     try:
