@@ -57,8 +57,10 @@ if st.button("Predict Sales"):
     st.write("Raw Input Data:")
     st.write(input_df)
 
-    # Print the input types for debugging
-    st.write("Input Data Types:", input_df.dtypes)
+    # Define the columns explicitly (categorical and numeric)
+    categorical_cols = ['Item_Identifier', 'Item_Fat_Content', 'Item_Type', 'Outlet_Identifier', 
+                        'Outlet_Size', 'Outlet_Location_Type', 'Outlet_Type']
+    numeric_cols = ['Item_Weight', 'Item_Visibility', 'Item_MRP', 'Outlet_Age']
 
     # Handle missing values (fill NaN with a default value, e.g., mean for numeric, mode for categorical)
     input_df = input_df.apply(pd.to_numeric, errors='coerce')  # Coerce errors to NaN
@@ -69,14 +71,10 @@ if st.button("Predict Sales"):
     st.write(input_df)
     st.write("Processed Data Types:", input_df.dtypes)
 
-    # Handle necessary preprocessing (e.g., encoding categorical variables)
+    # Label encoding for categorical columns only
     le = LabelEncoder()
-    input_df["Item_Fat_Content"] = le.fit_transform(input_df["Item_Fat_Content"])
-    input_df["Item_Type"] = le.fit_transform(input_df["Item_Type"])
-    input_df["Outlet_Identifier"] = le.fit_transform(input_df["Outlet_Identifier"])
-    input_df["Outlet_Size"] = le.fit_transform(input_df["Outlet_Size"])
-    input_df["Outlet_Location_Type"] = le.fit_transform(input_df["Outlet_Location_Type"])
-    input_df["Outlet_Type"] = le.fit_transform(input_df["Outlet_Type"])
+    for col in categorical_cols:
+        input_df[col] = le.fit_transform(input_df[col])
 
     # Debugging: Print the final processed input data and types
     st.write("Final Processed Input Data:")
