@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import pickle
+from sklearn.preprocessing import LabelEncoder
 
 # Load Model (without version info) from Pickle
 with open("bigmart_best_model.pkl", "rb") as f:
@@ -51,9 +52,7 @@ if st.button("Predict Sales"):
         "Outlet_Age": Outlet_Age
     }])
 
-    # Handle any necessary preprocessing (e.g., encoding categorical variables)
-    # Example: Label encoding for categorical columns (if needed)
-    from sklearn.preprocessing import LabelEncoder
+    # Handle necessary preprocessing (e.g., encoding categorical variables)
     le = LabelEncoder()
     input_df["Item_Fat_Content"] = le.fit_transform(input_df["Item_Fat_Content"])
     input_df["Item_Type"] = le.fit_transform(input_df["Item_Type"])
@@ -62,8 +61,10 @@ if st.button("Predict Sales"):
     input_df["Outlet_Location_Type"] = le.fit_transform(input_df["Outlet_Location_Type"])
     input_df["Outlet_Type"] = le.fit_transform(input_df["Outlet_Type"])
 
-    # Make prediction using the model
-    prediction = model.predict(input_df)[0]
-    
-    # Display prediction result
-    st.success(f"📈 Predicted Item Outlet Sales: ₹{prediction:.2f}")
+    # Ensure that the model receives data in the same format and shape as the training data
+    try:
+        # Make prediction using the model
+        prediction = model.predict(input_df)[0]
+        st.success(f"📈 Predicted Item Outlet Sales: ₹{prediction:.2f}")
+    except Exception as e:
+        st.error(f"Error during prediction: {e}")
