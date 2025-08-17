@@ -63,33 +63,32 @@ if st.button("Predict Sales"):
     numeric_cols = ['Item_Weight', 'Item_Visibility', 'Item_MRP', 'Outlet_Age']
 
     # Check if the input dataframe is empty or not
-    if input_df.empty:
-        st.error("Input data is empty. Please check the inputs.")
-        return
+    if input_df.isnull().values.any():
+        st.error("Input data contains missing values. Please fill in all fields.")
+    else:
+        # Handle missing values (fill NaN with a default value, e.g., mean for numeric, mode for categorical)
+        input_df = input_df.apply(pd.to_numeric, errors='coerce')  # Coerce errors to NaN
+        input_df.fillna(input_df.mean(), inplace=True)  # Fill NaN with column means for numeric columns
 
-    # Handle missing values (fill NaN with a default value, e.g., mean for numeric, mode for categorical)
-    input_df = input_df.apply(pd.to_numeric, errors='coerce')  # Coerce errors to NaN
-    input_df.fillna(input_df.mean(), inplace=True)  # Fill NaN with column means for numeric columns
+        # Debugging: Print the processed input data and types after handling NaN
+        st.write("Processed Input Data (After NaN Handling):")
+        st.write(input_df)
+        st.write("Processed Data Types:", input_df.dtypes)
 
-    # Debugging: Print the processed input data and types after handling NaN
-    st.write("Processed Input Data (After NaN Handling):")
-    st.write(input_df)
-    st.write("Processed Data Types:", input_df.dtypes)
+        # Label encoding for categorical columns only
+        le = LabelEncoder()
+        for col in categorical_cols:
+            input_df[col] = le.fit_transform(input_df[col])
 
-    # Label encoding for categorical columns only
-    le = LabelEncoder()
-    for col in categorical_cols:
-        input_df[col] = le.fit_transform(input_df[col])
+        # Debugging: Print the final processed input data and types
+        st.write("Final Processed Input Data:")
+        st.write(input_df)
+        st.write("Final Processed Data Types:", input_df.dtypes)
 
-    # Debugging: Print the final processed input data and types
-    st.write("Final Processed Input Data:")
-    st.write(input_df)
-    st.write("Final Processed Data Types:", input_df.dtypes)
-
-    # Ensure that the model receives data in the same format and shape as the training data
-    try:
-        # Make prediction using the model
-        prediction = model.predict(input_df)[0]  # Get the first element of the prediction
-        st.success(f"📈 Predicted Item Outlet Sales: ₹{prediction:.2f}")
-    except Exception as e:
-        st.error(f"Error during prediction: {e}")
+        # Ensure that the model receives data in the same format and shape as the training data
+        try:
+            # Make prediction using the model
+            prediction = model.predict(input_df)[0]  # Get the first element of the prediction
+            st.success(f"📈 Predicted Item Outlet Sales: ₹{prediction:.2f}")
+        except Exception as e:
+            st.error(f"Error during prediction: {e}")
