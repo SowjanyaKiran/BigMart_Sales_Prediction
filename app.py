@@ -62,6 +62,11 @@ if st.button("Predict Sales"):
                         'Outlet_Size', 'Outlet_Location_Type', 'Outlet_Type']
     numeric_cols = ['Item_Weight', 'Item_Visibility', 'Item_MRP', 'Outlet_Age']
 
+    # Check if the input dataframe is empty or not
+    if input_df.empty:
+        st.error("Input data is empty. Please check the inputs.")
+        return
+
     # Handle missing values (fill NaN with a default value, e.g., mean for numeric, mode for categorical)
     input_df = input_df.apply(pd.to_numeric, errors='coerce')  # Coerce errors to NaN
     input_df.fillna(input_df.mean(), inplace=True)  # Fill NaN with column means for numeric columns
