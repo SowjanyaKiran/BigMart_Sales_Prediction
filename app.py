@@ -3,13 +3,13 @@ import pandas as pd
 import pickle
 from sklearn.preprocessing import LabelEncoder
 
-# Load Model (without version info) from Pickle
+# Load Model (unpack the tuple) from Pickle
 with open("bigmart_best_model.pkl", "rb") as f:
-    model = pickle.load(f)  # Only load the model (not the sklearn version)
+    model, sklearn_version = pickle.load(f)  # Unpack the tuple (model, version)
 
 # Set up the Streamlit app title and description
 st.title("🛒 BigMart Sales Prediction App")
-st.markdown("This app predicts item sales for BigMart using a pre-trained model.")
+st.markdown(f"Using **scikit-learn v{sklearn_version}** model to predict item sales.")
 
 # User Inputs
 Item_Identifier = st.text_input("Item Identifier", "FDA15")
@@ -64,7 +64,7 @@ if st.button("Predict Sales"):
     # Ensure that the model receives data in the same format and shape as the training data
     try:
         # Make prediction using the model
-        prediction = model.predict(input_df)[0]
+        prediction = model.predict(input_df)[0]  # Get the first element of the prediction
         st.success(f"📈 Predicted Item Outlet Sales: ₹{prediction:.2f}")
     except Exception as e:
         st.error(f"Error during prediction: {e}")
