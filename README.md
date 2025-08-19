@@ -14,8 +14,6 @@ The dataset contains details of products and outlets including:
 
 This structured data enables feature engineering and training of regression models.  
 
----
-
 🛠️ **Project Workflow**  
 
 📌 **1. Install Dependencies**  
