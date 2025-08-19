@@ -25,44 +25,33 @@ pip install -r requirements.txt
 📌 2. Load Model
 
 Pre-trained model (bigmart_best_model.joblib) is loaded using joblib.
-
 Metadata file (model_meta.json) is used to check scikit-learn version compatibility.
 
 📌 3. Streamlit Web App
 
 User-friendly form to input product & outlet details.
-
 Handles both categorical and numerical features.
-
 On clicking Predict, the app outputs estimated sales instantly.
 
 📌 4. Prediction
 
 Converts user inputs into a Pandas DataFrame.
-
 Passes data through the trained ML pipeline.
-
 Displays predicted sales value in INR 💰.
 
 🧠 Model Summary
 
 Preprocessing: Encoding categorical variables, scaling numeric ones.
-
 Algorithms explored: Linear Regression, Random Forest, XGBoost, etc.
-
 Final deployed model: Best-performing pipeline stored in .joblib.
 
 📊 Sample Inference
 Input:
 
 Item MRP → 150.0
-
 Fat Content → Low Fat
-
 Outlet Identifier → OUT027
-
 Outlet Size → Medium
-
 Outlet Age → 15
 
 Output:
@@ -73,35 +62,24 @@ Output:
 🖼️ Architecture Diagram
 
 Below is the high-level flow of how this project works:
-
 Explanation:
-
 User Input (Streamlit UI) → Enter item & outlet details
-
 Data Preprocessing → Encoding + Scaling
-
 Trained ML Model → Predicts sales
-
 Streamlit Output → Displays prediction
 
 💻 Tech Stack
 
 Python
-
 Streamlit (web app framework)
-
 Pandas (data handling)
-
 Scikit-learn (ML pipeline & model)
-
 Joblib (model serialization)
 
 🙌 Future Improvements
 
 Deploy app on Streamlit Cloud / AWS / Heroku.
-
 Add data visualization dashboards for sales insights.
-
 Explore deep learning models for advanced regression tasks.
 
 📁 License
