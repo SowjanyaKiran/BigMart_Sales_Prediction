@@ -3,7 +3,6 @@
 This project focuses on predicting **retail product sales** in BigMart outlets using a **Machine Learning pipeline** trained on historical sales data.  
 The model takes various product and outlet attributes as input (like Item Weight, MRP, Fat Content, Outlet Type, etc.) and predicts the expected sales for that item.  
 
----
 
 📂 **Dataset**  
 The dataset contains details of products and outlets including:  
