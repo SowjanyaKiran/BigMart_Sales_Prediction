@@ -17,7 +17,7 @@ This structured data enables feature engineering and training of regression mode
 🛠️ **Project Workflow**  
 
 📌 **1. Install Dependencies**  
-```bash
+
 pip install -r requirements.txt
 
 📌 2. Load Model
